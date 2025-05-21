@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>초상화 이미지 주석 보기</title>
+  <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.7.3/dist/annotorious.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.7.3/dist/annotorious.min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 2em;
+      text-align: center;
+    }
+    img {
+      max-width: 90%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h2>초상화 이미지 주석 보기</h2>
+  <img id="jport-img" src="seo016629-000-007.jpg" alt="Annotated Portrait">
+
+  <script>
+    const anno = Annotorious.init({ image: 'jport-img' });
+
+    fetch('annotations.json')
+      .then(response => response.json())
+      .then(data => {
+        if (Array.isArray(data.items)) {
+          anno.loadAnnotations(data.items);
+        } else {
+          console.error("annotations.json에 'items' 배열이 없습니다.");
+        }
+      })
+      .catch(err => console.error('주석 로딩 오류:', err));
+  </script>
+</body>
+</html>
